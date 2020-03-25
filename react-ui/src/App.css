@@ -30,3 +30,8 @@
     transform: rotate(360deg);
   }
 }
+
+.picture-capture {
+  position: absolute;
+  /* left: -1000px; */
+}

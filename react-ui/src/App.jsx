@@ -1,29 +1,26 @@
-import React, { PureComponent, createRef } from 'react'
-import Webcam from "react-webcam"
-import { sendMessage } from './websocket'
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import PictureCapture from './PictureCapture'
+import { captureUserPicture } from './actions'
 
 import './App.css'
 
-const dimensions = { width: 320, height: 240 }
-
-export default class App extends PureComponent {
-  webcamRef = createRef()
+export class App extends PureComponent {
+  componentDidMount() {
+    setInterval(() => {
+      this.props.captureUserPicture()
+    }, 10000)
+  }
 
   render = () => (
     <>
-      <Webcam
-        audio={false}
-        ref={this.webcamRef}
-        screenshotFormat="image/jpeg"
-        videoConstraints={{ ...dimensions, facingMode: 'user' }}
-        {...dimensions}
-      />
-      <button onClick={this.capturePhoto}>Capture photo</button>
+      {this.props.state.capturingImage ? <PictureCapture /> : null}
+      <pre>{JSON.stringify(this.props, null, 2)}</pre>
     </>
   )
-
-  capturePhoto = () => {
-    const image = this.webcamRef.current.getScreenshot()
-    sendMessage({ type: 'updatePicture', image })
-  }
 }
+
+export default connect(
+  (state) => ({ state }),
+  { captureUserPicture }
+)(App)
