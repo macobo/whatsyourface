@@ -1,5 +1,6 @@
 import React, { PureComponent, createRef } from 'react'
 import Webcam from "react-webcam"
+import { sendMessage } from './websocket'
 
 import './App.css'
 
@@ -22,6 +23,7 @@ export default class App extends PureComponent {
   )
 
   capturePhoto = () => {
-    console.log(this.webcamRef.current.getScreenshot())
+    const image = this.webcamRef.current.getScreenshot()
+    sendMessage({ type: 'updatePicture', image })
   }
 }

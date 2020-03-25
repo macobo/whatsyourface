@@ -1,6 +1,8 @@
 const express = require('express')
 const { Server } = require('ws')
 const path = require('path')
+const uuid = require('uuid')
+const { PictureServer, Connector } = require('./pictureServer')
 
 const isDev = process.env.NODE_ENV !== 'production'
 const PORT = process.env.PORT || 5005
@@ -21,14 +23,23 @@ const server = app.listen(PORT, function () {
 })
 
 const websockets = new Server({ server })
+const connector = new Connector(websockets)
+const pictureServer = new PictureServer(connector)
 
 websockets.on('connection', (ws) => {
-  console.log('Client connected')
-  ws.on('close', () => console.log('Client disconnected'))
+  ws.id = uuid.v4()
+  pictureServer.login(ws.id)
+
+  ws.send(JSON.stringify({ type: 'uuid', payload: ws.id }))
+
+  console.log('Client connected', ws.id)
+  ws.on('message', (message) => {
+    pictureServer.handleMessage(ws.id, JSON.parse(message))
+  })
+
+  ws.on('close', () => {
+    console.log('Client disconnected', ws.id)
+    pictureServer.logout(ws.id)
+  })
 })
 
-setInterval(() => {
-  websockets.clients.forEach((client) => {
-    client.send(new Date().toTimeString())
-  })
-}, 1000)
