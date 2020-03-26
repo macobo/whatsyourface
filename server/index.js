@@ -1,6 +1,7 @@
 const express = require('express')
 const { Server } = require('ws')
 const path = require('path')
+const url = require('url')
 const uuid = require('uuid')
 const { PictureServer, Connector } = require('./pictureServer')
 
@@ -26,13 +27,13 @@ const websockets = new Server({ server })
 const connector = new Connector(websockets)
 const pictureServer = new PictureServer(connector)
 
-websockets.on('connection', (ws) => {
-  ws.id = uuid.v4()
+websockets.on('connection', (ws, req) => {
+  ws.id = url.parse(req.url, true).query.id || uuid.v4()
   pictureServer.login(ws.id)
 
   ws.send(JSON.stringify({ type: 'uuid', payload: ws.id }))
 
-  console.log('Client connected', ws.id)
+  console.log('Client connected', ws.id, req.url)
   ws.on('message', (message) => {
     pictureServer.handleMessage(ws.id, JSON.parse(message))
   })

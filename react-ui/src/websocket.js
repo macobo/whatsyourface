@@ -2,17 +2,22 @@ let activeWebsocket
 
 export function sendMessage(event) {
   if (activeWebsocket) {
-    console.debug('Sending message', event)
-    activeWebsocket.send(JSON.stringify(event))
-  } else {
-    console.log('No active websocket, queueing message', event)
-    setTimeout(() => sendMessage(event), 300)
+    try {
+      console.debug('Sending message', event)
+      activeWebsocket.send(JSON.stringify(event))
+      return
+    } catch(err) {
+      console.error('Send failed, retrying later', err)
+
+    }
   }
+  console.log('Queueing message', event)
+  setTimeout(() => sendMessage(event), 1000)
 }
 
 export function connectWebsocket(store) {
-  console.log('Opening websocket')
-  const ws = new WebSocket('ws://localhost:5005')
+  const id = store.getState().uuid || ''
+  const ws = new WebSocket(`ws://localhost:5005?id=${id}`)
   activeWebsocket = ws
 
   ws.onmessage = (event) => {
