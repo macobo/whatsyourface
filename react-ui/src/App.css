@@ -35,3 +35,24 @@
   position: absolute;
   left: -1000px;
 }
+
+.user-image {
+  height: 240px;
+  width: 320px;
+}
+
+.user-image__overlay {
+  opacity: 0;
+
+  height: 240px;
+  width: 320px;
+  position: absolute;
+
+  background-color: rgba(54,63,67,.7);
+  top: 0;
+  z-index: 2;
+}
+
+.user-image__overlay:hover {
+  opacity: 1;
+}
