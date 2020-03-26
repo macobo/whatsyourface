@@ -2,19 +2,11 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import PictureCapture from './PictureCapture'
 import UserImage from './UserImage'
-import { captureUserPicture } from './actions'
 import { getActiveUsers } from './selectors'
 
 import './App.css'
 
 export class App extends PureComponent {
-  componentDidMount() {
-    this.props.captureUserPicture()
-    setInterval(() => {
-      this.props.captureUserPicture()
-    }, 10000)
-  }
-
   render = () => (
     <>
       {this.props.capturingImage ? <PictureCapture /> : null}
@@ -28,5 +20,4 @@ export default connect(
     capturingImage: state.capturingImage,
     users: getActiveUsers(state)
   }),
-  { captureUserPicture }
 )(App)

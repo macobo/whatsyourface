@@ -9,3 +9,13 @@ export const updateUserPicture = createAsyncThunk(
     sendMessage({ type: 'updatePicture', image })
   }
 )
+
+let pictureTimer
+export const setupPictureTimer = () => (dispatch, getState) => {
+  if (pictureTimer) {
+    clearInterval(pictureTimer)
+  }
+
+  dispatch(captureUserPicture())
+  pictureTimer = setInterval(() => { dispatch(captureUserPicture()) }, 60000)
+}

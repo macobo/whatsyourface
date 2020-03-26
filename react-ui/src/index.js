@@ -4,6 +4,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import persistState from 'redux-localstorage'
 import * as reducers from './reducer'
+import { setupPictureTimer } from './actions'
 import { connectWebsocket } from './websocket'
 import App from './App'
 
@@ -20,3 +21,4 @@ ReactDOM.render(
 )
 
 connectWebsocket(store)
+store.dispatch(setupPictureTimer())
