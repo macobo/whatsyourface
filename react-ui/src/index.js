@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import * as reducers from './reducer'
-import websocket from './websocket'
+import { connectWebsocket } from './websocket'
 import App from './App'
 
 import './index.css'
@@ -15,7 +15,4 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-websocket.onmessage = (event) => {
-  const message = JSON.parse(event.data)
-  store.dispatch(message)
-}
+connectWebsocket(store)
