@@ -11,11 +11,16 @@ export class UserImage extends PureComponent {
         alt={this.props.user.id}
       />
       <div className="user-image__overlay">
-        <button onClick={this.props.captureUserPicture}>Take photo</button>
+        <button onClick={this.captureUserPicture}>Take photo</button>
         <input value={this.props.timerFrequency} onChange={this.setTimerFrequency} />
       </div>
     </div>
   )
+
+  // :TRICKY: Strip event argument to avoid warnings
+  captureUserPicture = () => {
+    this.props.captureUserPicture()
+  }
 
   setTimerFrequency = (event) => {
     const value = +event.target.value
