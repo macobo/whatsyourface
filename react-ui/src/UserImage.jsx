@@ -5,15 +5,15 @@ import { captureUserPicture, setTimerFrequency, setupPictureTimer } from './acti
 export class UserImage extends PureComponent {
   render = () => (
     <div className="user-image">
+      <div className="user-image__overlay">
+        <button onClick={this.captureUserPicture}>Take photo</button>
+        <input value={this.props.timerFrequency} onChange={this.setTimerFrequency} />
+      </div>
       <img
         className="user-image__image"
         src={this.props.user.image || 'https://via.placeholder.com/320x240'}
         alt={this.props.user.id}
       />
-      <div className="user-image__overlay">
-        <button onClick={this.captureUserPicture}>Take photo</button>
-        <input value={this.props.timerFrequency} onChange={this.setTimerFrequency} />
-      </div>
     </div>
   )
 
