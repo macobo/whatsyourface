@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { captureUserPicture, setTimerFrequency, setupPictureTimer } from './actions'
 
-export class UserImage extends PureComponent {
+export class UserView extends PureComponent {
   render = () => (
     <div className="user-image">
       <div className="user-image__overlay">
@@ -34,4 +34,4 @@ export class UserImage extends PureComponent {
 export default connect(
   ({ timerFrequency }) => ({timerFrequency}),
   { captureUserPicture, setTimerFrequency, setupPictureTimer }
-)(UserImage)
+)(UserView)
