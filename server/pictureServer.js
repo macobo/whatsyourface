@@ -11,10 +11,10 @@ class PictureServer {
     this[event.type](id, event)
   }
 
-  login = (id, name) => {
+  login = (id) => {
     this.updateState(id, {
       id,
-      name: name || generateRandomName(),
+      name: generateRandomName(),
       image: null,
       ...this.state[id],
       active: true,

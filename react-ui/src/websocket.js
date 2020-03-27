@@ -1,3 +1,5 @@
+import { updateUserPicture, setUserName } from './actions'
+
 const rootUrl = window.location.href.indexOf('localhost') !== -1 ? 'ws://localhost:5005' : window.location.href.replace(/^http/, 'ws')
 console.log({ rootUrl })
 let activeWebsocket
@@ -16,15 +18,23 @@ export function sendMessage(event) {
   setTimeout(() => sendMessage(event), 1000)
 }
 
-export const websocketUrl = (store) => {
-  const id = store.getState().uuid || ''
-  const user = store.getState().users[id]
-  return `${rootUrl}?id=${id}${user && user.name ? `&name=${user.name}` : ''}`
-}
+export const websocketUrl = (id, user) =>
+  `${rootUrl}?id=${id || '' }`
 
 export function connectWebsocket(store) {
-  const ws = new WebSocket(websocketUrl(store))
+  console.log('Connecting to websocket...')
+  const { users, uuid } = store.getState()
+  const user = users[uuid]
+
+  const ws = new WebSocket(websocketUrl(uuid, user))
   activeWebsocket = ws
+
+  if (user && user.image) {
+    store.dispatch(updateUserPicture(users[uuid].image))
+  }
+  if (user && user.name) {
+    store.dispatch(setUserName(user.name))
+  }
 
   ws.onmessage = (event) => {
     console.debug('Received message', event)

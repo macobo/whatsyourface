@@ -30,7 +30,7 @@ const pictureServer = new PictureServer(connector)
 websockets.on('connection', (ws, req) => {
   const parsedQuery = url.parse(req.url, true).query
   ws.id = parsedQuery.id || uuid.v4()
-  pictureServer.login(ws.id, parsedQuery.name)
+  pictureServer.login(ws.id)
 
   ws.send(JSON.stringify({ type: 'uuid', payload: ws.id }))
 
