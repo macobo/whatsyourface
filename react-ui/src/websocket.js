@@ -1,14 +1,13 @@
 let activeWebsocket
 
 export function sendMessage(event) {
-  if (activeWebsocket) {
+  if (activeWebsocket && activeWebsocket.readyState === activeWebsocket.OPEN) {
     try {
       console.debug('Sending message', event)
       activeWebsocket.send(JSON.stringify(event))
       return
     } catch(err) {
       console.error('Send failed, retrying later', err)
-
     }
   }
   console.log('Queueing message', event)

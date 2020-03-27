@@ -1,13 +1,16 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { captureUserPicture, setTimerFrequency, setupPictureTimer } from './actions'
+import { captureUserPicture, setTimerFrequency, setupPictureTimer, setUserName } from './actions'
 
 export class UserView extends PureComponent {
+  state = { name: this.props.user.name }
+
   render = () => (
     <div className="user-image">
       <div className="user-image__overlay">
         <button onClick={this.captureUserPicture}>Take photo</button>
         <input value={this.props.timerFrequency} onChange={this.setTimerFrequency} />
+        <input value={this.state.name} onChange={this.setName} />
       </div>
       <img
         className="user-image__image"
@@ -29,9 +32,15 @@ export class UserView extends PureComponent {
       this.props.setupPictureTimer()
     }
   }
+
+  setName = (event) => {
+    const name = event.target.value
+    this.setState({ name })
+    this.props.setUserName(name)
+  }
 }
 
 export default connect(
   ({ timerFrequency }) => ({timerFrequency}),
-  { captureUserPicture, setTimerFrequency, setupPictureTimer }
+  { captureUserPicture, setTimerFrequency, setupPictureTimer, setUserName }
 )(UserView)

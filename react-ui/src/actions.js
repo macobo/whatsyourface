@@ -1,3 +1,4 @@
+import { debounce } from 'lodash'
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit'
 import { sendMessage } from './websocket'
 
@@ -20,4 +21,13 @@ export const setupPictureTimer = () => (dispatch, getState) => {
   const { timerFrequency } = getState()
   dispatch(captureUserPicture())
   pictureTimer = setInterval(() => { dispatch(captureUserPicture()) }, timerFrequency)
+}
+
+const debouncedSetUserName = debounce(
+  (name) => { sendMessage({ type: 'updateName', name }) },
+  300
+)
+
+export const setUserName = (name) => () => {
+  debouncedSetUserName(name)
 }

@@ -13,6 +13,7 @@ class PictureServer {
       id,
       name: id,
       image: null,
+      ...this.state[id],
       active: true,
     })
     console.log({id, state: this.state})
@@ -26,6 +27,11 @@ class PictureServer {
 
   updatePicture = (id, event) => {
     this.updateState(id, { image: event.image })
+    this.connector.updateAllUsers(this.state)
+  }
+
+  updateName = (id, event) => {
+    this.updateState(id, { name: event.name })
     this.connector.updateAllUsers(this.state)
   }
 
