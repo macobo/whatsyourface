@@ -12,7 +12,7 @@ export class UserView extends PureComponent {
       </div>
       <img
         className="user-image__image"
-        src={this.props.user.image || 'https://via.placeholder.com/320x240'}
+        src={this.props.user.image || 'https://picsum.photos/320/240'}
         alt={this.props.user.id}
       />
     </div>
