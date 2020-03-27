@@ -10,7 +10,9 @@ export class UserView extends PureComponent {
   render = () => (
     <div className="user-image">
       <div className="user-image__overlay">
-        {this.props.activeUser ? this.renderActiveUserOverlay() : this.renderOverlay()}
+        <div className="user-overlay-content">
+          {this.props.activeUser ? this.renderActiveUserOverlay() : this.renderOverlay()}
+        </div>
       </div>
       <img
         className="user-image__image"
@@ -25,16 +27,35 @@ export class UserView extends PureComponent {
 
   renderActiveUserOverlay = () => (
     <>
-      <button onClick={this.captureUserPicture}>Take photo</button>
-      <input value={this.props.timerFrequency} onChange={this.setTimerFrequency} />
-      <input value={this.state.name} onChange={this.setName} />
+      <div className="user-overlay-content__button">
+        <button className="tertiary" onClick={this.captureUserPicture}>
+          📷
+        </button>
+      </div>
+      <div className="user-overlay-content__details">
+        <div>
+          Name:
+          &nbsp;
+          <a href="#" className="user-overlay-content__link" onClick={this.setName}>{this.state.name}</a>
+        </div>
+        <div>
+          Refresh rate:
+          &nbsp;
+          <a href="#" className="user-overlay-content__link" onClick={this.setTimerFrequency}>
+            {this.props.timerFrequency} ms
+          </a>
+        </div>
+      </div>
     </>
   )
 
   renderOverlay = () => (
     <>
-      <div>{this.props.user.name}</div>
-      <div>Last seen: {moment(this.props.user.lastUpdate).fromNow()}</div>
+      <div />
+      <div className="user-overlay-content__details">
+        <div>{this.props.user.name}</div>
+        <div>Last seen: {moment(this.props.user.lastUpdate).fromNow()}</div>
+      </div>
     </>
   )
 
@@ -51,7 +72,9 @@ export class UserView extends PureComponent {
   }
 
   setTimerFrequency = (event) => {
-    const value = +event.target.value
+    event.preventDefault()
+
+    const value = +prompt('Enter timer frequency (milliseconds)', this.props.timerFrequency)
     if (value) {
       this.props.setTimerFrequency(value)
       this.props.setupPictureTimer()
@@ -59,9 +82,13 @@ export class UserView extends PureComponent {
   }
 
   setName = (event) => {
-    const name = event.target.value
-    this.setState({ name })
-    this.props.setUserName(name)
+    event.preventDefault()
+
+    const name = prompt('Enter name', this.props.name)
+    if (name) {
+      this.setState({ name })
+      this.props.setUserName(name)
+    }
   }
 }
 

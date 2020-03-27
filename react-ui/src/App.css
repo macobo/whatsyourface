@@ -28,6 +28,7 @@
 }
 
 .user-image__overlay {
+  color: white;
   opacity: 0;
 
   height: 240px;
@@ -64,4 +65,29 @@
 
 .user-image:hover .user-image__status-indicator {
   height: 10px;
+}
+
+.user-overlay-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.user-overlay-content__button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.user-overlay-content__details {
+  margin-bottom: 20px;
+  margin-right: 5px;
+  text-align: right;
+}
+
+.user-overlay-content__link {
+  color: white !important;
+  text-decoration: underline;
+  font-weight: bold;
 }
