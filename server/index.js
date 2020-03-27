@@ -28,8 +28,9 @@ const connector = new Connector(websockets)
 const pictureServer = new PictureServer(connector)
 
 websockets.on('connection', (ws, req) => {
-  ws.id = url.parse(req.url, true).query.id || uuid.v4()
-  pictureServer.login(ws.id)
+  const parsedQuery = url.parse(req.url, true).query
+  ws.id = parsedQuery.id || uuid.v4()
+  pictureServer.login(ws.id, parsedQuery.name)
 
   ws.send(JSON.stringify({ type: 'uuid', payload: ws.id }))
 

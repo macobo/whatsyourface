@@ -16,9 +16,14 @@ export function sendMessage(event) {
   setTimeout(() => sendMessage(event), 1000)
 }
 
-export function connectWebsocket(store) {
+export const websocketUrl = (store) => {
   const id = store.getState().uuid || ''
-  const ws = new WebSocket(`${rootUrl}?id=${id}`)
+  const user = store.getState().users[id]
+  return `${rootUrl}?id=${id}${user && user.name ? `&name=${user.name}` : ''}`
+}
+
+export function connectWebsocket(store) {
+  const ws = new WebSocket(websocketUrl(store))
   activeWebsocket = ws
 
   ws.onmessage = (event) => {
