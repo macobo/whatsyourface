@@ -7,8 +7,9 @@ const getActiveUserId = (state) => state.uuid
 
 export const getActiveUsers = createSelector(
   [getUsers, getActiveUserId],
-  (users, uuid) => chain(users)
-    .values()
-    .sortBy((user) => user.id === uuid ? 0 : 1)
-    .value()
+  (users, uuid) =>
+    chain(users)
+      .values()
+      .sortBy((user) => user.id === uuid ? 0 : 1)
+      .value()
 )
