@@ -1,4 +1,4 @@
-const generateRandomAnimalName = require('random-animal-name-generator')
+const generateRandomName = require('./randomNames')
 
 class PictureServer {
   constructor(connector) {
@@ -13,7 +13,7 @@ class PictureServer {
   login = (id) => {
     this.updateState(id, {
       id,
-      name: generateRandomAnimalName(),
+      name: generateRandomName(),
       image: null,
       ...this.state[id],
       active: true,
