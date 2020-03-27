@@ -19,22 +19,22 @@ class PictureServer {
       ...this.state[id],
       active: true,
     })
-    this.connector.updateAllUsers('setState', this.state)
+    this.connector.notifyAllUsers('setState', this.state)
   }
 
   logout = (id) => {
     this.updateState(id, { active: false })
-    this.connector.updateAllUsers('setState', this.state)
+    this.connector.notifyAllUsers('setState', this.state)
   }
 
   updatePicture = (id, event) => {
     this.updateState(id, { image: event.image })
-    this.connector.updateAllUsers('updateState', pick(this.state, id))
+    this.connector.notifyAllUsers('updateState', pick(this.state, id))
   }
 
   updateName = (id, event) => {
     this.updateState(id, { name: event.name })
-    this.connector.updateAllUsers('updateState', pick(this.state, id))
+    this.connector.notifyAllUsers('updateState', pick(this.state, id))
   }
 
   updateState = (id, update) => {
