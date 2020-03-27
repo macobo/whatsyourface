@@ -13,10 +13,12 @@ export const updateUserPicture = createAsyncThunk(
 )
 
 let pictureTimer
-export const setupPictureTimer = () => (dispatch, getState) => {
+export const setupPictureTimer = () => async(dispatch, getState) => {
   if (pictureTimer) {
     clearInterval(pictureTimer)
   }
+
+  await navigator.mediaDevices.getUserMedia({ video: true })
 
   const { timerFrequency } = getState()
   dispatch(captureUserPicture())
