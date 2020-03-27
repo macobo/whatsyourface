@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import { captureUserPicture, setTimerFrequency, setupPictureTimer, setUserName } from './actions'
 
 export class UserView extends PureComponent {
@@ -27,7 +28,10 @@ export class UserView extends PureComponent {
   )
 
   renderOverlay = () => (
-    <span>{this.props.user.name}</span>
+    <>
+      <div>{this.props.user.name}</div>
+      <div>Last seen: {moment(this.props.user.lastUpdate).fromNow()}</div>
+    </>
   )
 
   // :TRICKY: Strip event argument to avoid warnings

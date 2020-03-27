@@ -40,6 +40,7 @@ class PictureServer {
     this.state[id] = {
       ...this.state[id],
       ...update,
+      lastUpdate: Date.now(),
     }
   }
 }
