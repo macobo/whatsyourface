@@ -10,7 +10,9 @@ export class App extends PureComponent {
   render = () => (
     <>
       {this.props.capturingImage ? <PictureCapture /> : null}
-      {this.props.users.map((user) => <UserView key={user.id} user={user} />)}
+      <div className="picture-grid">
+        {this.props.users.map((user) => <UserView key={user.id} user={user} />)}
+      </div>
     </>
   )
 }
