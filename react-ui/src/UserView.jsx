@@ -8,9 +8,7 @@ export class UserView extends PureComponent {
   render = () => (
     <div className="user-image">
       <div className="user-image__overlay">
-        <button onClick={this.captureUserPicture}>Take photo</button>
-        <input value={this.props.timerFrequency} onChange={this.setTimerFrequency} />
-        <input value={this.state.name} onChange={this.setName} />
+        {this.props.activeUser ? this.renderActiveUserOverlay() : this.renderOverlay()}
       </div>
       <img
         className="user-image__image"
@@ -18,6 +16,18 @@ export class UserView extends PureComponent {
         alt={this.props.user.id}
       />
     </div>
+  )
+
+  renderActiveUserOverlay = () => (
+    <>
+      <button onClick={this.captureUserPicture}>Take photo</button>
+      <input value={this.props.timerFrequency} onChange={this.setTimerFrequency} />
+      <input value={this.state.name} onChange={this.setName} />
+    </>
+  )
+
+  renderOverlay = () => (
+    <span>{this.props.user.name}</span>
   )
 
   // :TRICKY: Strip event argument to avoid warnings
@@ -41,6 +51,9 @@ export class UserView extends PureComponent {
 }
 
 export default connect(
-  ({ timerFrequency }) => ({timerFrequency}),
+  ({ timerFrequency, uuid }, props) => ({
+    activeUser: uuid === props.user.id,
+    timerFrequency
+  }),
   { captureUserPicture, setTimerFrequency, setupPictureTimer, setUserName }
 )(UserView)
