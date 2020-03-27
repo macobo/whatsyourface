@@ -16,6 +16,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "lodash": "^4.17.15",
+    "random-animal-name-generator": "^0.1.1",
     "redux-localstorage": "^0.4.1",
     "uuid": "^7.0.2",
     "ws": "^7.2.3"

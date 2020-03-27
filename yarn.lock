@@ -280,6 +280,11 @@ qs@6.7.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
+random-animal-name-generator@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/random-animal-name-generator/-/random-animal-name-generator-0.1.1.tgz#c42b58ae1a7c4b691b136843e0e84484a0cea8de"
+  integrity sha512-VggZMRUlhOcRlm0x+2BegT+QfzeFj82Q5BqykpMcsrDoHR+NUp2DEnrZmYWekFgN3qCGRX73GYRygHAv4+0pQQ==
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
