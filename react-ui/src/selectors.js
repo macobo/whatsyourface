@@ -10,6 +10,7 @@ export const getActiveUsers = createSelector(
   (users, uuid) =>
     chain(users)
       .values()
-      .sortBy((user) => user.id === uuid ? 0 : 1)
+      .sortBy((user) => [user.id === uuid, user.active])
+      .reverse()
       .value()
 )
