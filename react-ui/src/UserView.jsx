@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import classNames from 'classnames'
 import { captureUserPicture, setTimerFrequency, setupPictureTimer, setUserName } from './actions'
 
 export class UserView extends PureComponent {
@@ -14,8 +15,11 @@ export class UserView extends PureComponent {
       <img
         className="user-image__image"
         src={this.props.user.image || 'https://picsum.photos/320/240'}
-        alt={this.props.user.id}
+        alt={this.props.user.name}
       />
+      <div className="user-image__status-indicator-wrapper">
+        <div className={this.statusIndicatorClasses()} />
+      </div>
     </div>
   )
 
@@ -33,6 +37,13 @@ export class UserView extends PureComponent {
       <div>Last seen: {moment(this.props.user.lastUpdate).fromNow()}</div>
     </>
   )
+
+  statusIndicatorClasses = () =>
+    classNames({
+      'user-image__status-indicator': true,
+      'user-image__status-indicator--active': this.props.user.active,
+      'user-image__status-indicator--offline': !this.props.user.active,
+    })
 
   // :TRICKY: Strip event argument to avoid warnings
   captureUserPicture = () => {

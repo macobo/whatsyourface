@@ -37,8 +37,11 @@
 }
 
 .user-image {
-  height: 240px;
   width: 320px;
+}
+
+.user-image__image {
+  vertical-align: top;
 }
 
 .user-image__overlay {
@@ -52,6 +55,30 @@
   z-index: 2;
 }
 
-.user-image__overlay:hover {
+.user-image:hover .user-image__overlay {
   opacity: 1;
+}
+
+.user-image__status-indicator-wrapper {
+  position: relative;
+}
+
+.user-image__status-indicator {
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  z-index: 3;
+  bottom: 0;
+}
+
+.user-image__status-indicator--active {
+  background-color: #37a447;
+}
+
+.user-image__status-indicator--offline {
+  background-color: #353e42;
+}
+
+.user-image:hover .user-image__status-indicator {
+  height: 10px;
 }
