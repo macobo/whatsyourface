@@ -18,7 +18,6 @@ class PictureServer {
       ...this.state[id],
       active: true,
     })
-    console.log({id, state: this.state})
     this.connector.updateAllUsers(this.state)
   }
 
@@ -57,7 +56,6 @@ class Connector {
   }
 
   sendMessage = (client, event) => {
-    console.log(event)
     client.send(JSON.stringify(event))
   }
 }
