@@ -1,13 +1,14 @@
 import { createSelector } from 'reselect'
-import { chain, values } from 'lodash'
+import { chain } from 'lodash'
 
 const getUsers = (state) => state.users
 
-export const getActiveUsers = createSelector(
-  [getUsers],
-  (users) =>
-    chain(values(users))
-      .reject({ image: null })
-      .value()
+const getActiveUserId = (state) => state.uuid
 
+export const getActiveUsers = createSelector(
+  [getUsers, getActiveUserId],
+  (users, uuid) => chain(users)
+    .values()
+    .sortBy((user) => user.id === uuid ? 0 : 1)
+    .value()
 )
