@@ -6,7 +6,8 @@ export const uuid = createReducer('', {
 })
 
 export const users = createReducer({}, {
-  updateState: (state, action) => action.payload
+  setState: (state, action) => action.payload,
+  updateState: (state, action) => ({ ...state, ...action.payload })
 })
 
 export const capturingImage = createReducer(false, {

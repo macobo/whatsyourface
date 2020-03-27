@@ -1,3 +1,4 @@
+const { pick } = require('lodash')
 const generateRandomName = require('./randomNames')
 
 class PictureServer {
@@ -18,22 +19,22 @@ class PictureServer {
       ...this.state[id],
       active: true,
     })
-    this.connector.updateAllUsers(this.state)
+    this.connector.updateAllUsers('setState', this.state)
   }
 
   logout = (id) => {
     this.updateState(id, { active: false })
-    this.connector.updateAllUsers(this.state)
+    this.connector.updateAllUsers('setState', this.state)
   }
 
   updatePicture = (id, event) => {
     this.updateState(id, { image: event.image })
-    this.connector.updateAllUsers(this.state)
+    this.connector.updateAllUsers('updateState', pick(this.state, id))
   }
 
   updateName = (id, event) => {
     this.updateState(id, { name: event.name })
-    this.connector.updateAllUsers(this.state)
+    this.connector.updateAllUsers('updateState', pick(this.state, id))
   }
 
   updateState = (id, update) => {
@@ -50,9 +51,9 @@ class Connector {
     this.websocketServer = websocketServer
   }
 
-  updateAllUsers = (state) => {
+  notifyAllUsers = (type, payload) => {
     this.websocketServer.clients.forEach((client) => {
-      this.sendMessage(client, { type: 'updateState', payload: state })
+      this.sendMessage(client, { type, payload })
     })
   }
 
