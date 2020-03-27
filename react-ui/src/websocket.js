@@ -1,3 +1,5 @@
+const rootUrl = window.location.href.indexOf('localhost') !== -1 ? 'ws://localhost:5005' : window.location.href.replace(/^http/, 'ws')
+console.log({ rootUrl })
 let activeWebsocket
 
 export function sendMessage(event) {
@@ -16,7 +18,7 @@ export function sendMessage(event) {
 
 export function connectWebsocket(store) {
   const id = store.getState().uuid || ''
-  const ws = new WebSocket(`ws://localhost:5005?id=${id}`)
+  const ws = new WebSocket(`${rootUrl}?id=${id}`)
   activeWebsocket = ws
 
   ws.onmessage = (event) => {
