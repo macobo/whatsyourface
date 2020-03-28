@@ -1,6 +1,8 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit'
 import { sendMessage } from './websocket'
 
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
+
 export const setTimerFrequency = createAction('setTimerFrequency')
 export const setPictureFilter = createAction('setPictureFilter')
 export const captureUserPicture = createAction('captureUserPicture')
