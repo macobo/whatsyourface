@@ -28,3 +28,7 @@ export const setupPictureTimer = () => async(dispatch, getState) => {
 export const setUserName = (name) => () => {
   sendMessage({ type: 'updateName', name })
 }
+
+export const broadcastEmoji = (emoji) => () => {
+  sendMessage({ type: 'broadcastEmoji', emoji })
+}

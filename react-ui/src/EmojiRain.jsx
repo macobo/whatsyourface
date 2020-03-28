@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react'
-import { compact, sample, range, random } from 'lodash'
-
-var emoji = ['🌽', '🍇', '🍌', '🍒', '🍕', '🍷', '🍭', '💖', '💩', '🐷', '🐸', '🐳', '🎃', '🎾', '🌈', '🍦', '💁', '🔥', '😁', '😱', '🌴', '👏', '💃']
+import { connect } from 'react-redux'
+import { compact, flatMap, random, times } from 'lodash'
 
 class Particle {
-  static random() {
+  static random(emoji) {
     return new Particle(
       random(0, window.innerWidth - 50),
       random(-500, 0),
       random(30, 50),
       { x: random(-7, 7), y: random(40, 80) },
-      sample(emoji)
+      emoji
     )
   }
 
@@ -38,18 +37,31 @@ class Particle {
   }
 }
 
-export default class EmojiRain extends PureComponent {
+export class EmojiRain extends PureComponent {
   state = {
-    particles: range(50).map(() => Particle.random())
+    particles: [],
   }
 
   componentDidMount() {
+    this.lastSeenEmoji = this.props.emojiRain
     this.lastTimestamp = performance.now()
     this.animate(this.lastTimestamp)
   }
 
   componentWillUnmount() {
     window.cancelAnimationFrame(this.animationFrame)
+  }
+
+  componentDidUpdate = () => {
+    if (this.lastSeenEmoji !== this.props.emojiRain) {
+      const newParticles = flatMap(this.props.emojiRain, (newCount, emoji) => {
+        const increase = newCount - (this.lastSeenEmoji[emoji] || 0)
+        return times(increase, () => Particle.random(emoji))
+      })
+
+      this.setState({ particles: this.state.particles.concat(newParticles) })
+      this.lastSeenEmoji = this.props.emojiRain
+    }
   }
 
   animate = (timestamp) => {
@@ -71,3 +83,7 @@ export default class EmojiRain extends PureComponent {
     <div key={index} style={particle.style()}>{particle.emoji}</div>
   )
 }
+
+export default connect(
+  ({ emojiRain }) => ({ emojiRain })
+)(EmojiRain)

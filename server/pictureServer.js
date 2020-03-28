@@ -37,6 +37,10 @@ class PictureServer {
     this.connector.notifyAllUsers('updateState', pick(this.state, id))
   }
 
+  broadcastEmoji = (id, event) => {
+    this.connector.notifyAllUsers('addEmoji', { emoji: event.emoji, count: 5 })
+  }
+
   updateState = (id, update) => {
     this.state[id] = {
       ...this.state[id],

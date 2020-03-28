@@ -123,6 +123,7 @@
 }
 
 .control-panel__panel {
+  text-align: start;
   background-color: rgb(226, 226, 226);;
   padding: 20px;
   padding-bottom: 10px;

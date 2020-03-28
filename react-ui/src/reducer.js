@@ -22,3 +22,10 @@ export const timerFrequency = createReducer(60, {
 export const pictureFilter = createReducer(null, {
   [actions.setPictureFilter]: (state, action) => action.payload
 })
+
+export const emojiRain = createReducer({}, {
+  addEmoji: (state, action) => ({
+    ...state,
+    [action.payload.emoji]: (state[action.payload.emoji] || 0) + action.payload.count
+  })
+})

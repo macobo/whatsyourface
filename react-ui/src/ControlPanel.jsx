@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import Select from 'react-select'
 import { captureUserPicture, setPictureFilter } from './actions'
+import EmojiButton from './EmojiButton'
 
 const makeOption = (value) => ({ label: value || 'none', value })
 
 const options = [null].concat(window.pixelsJS.getFilterList()).map(makeOption)
+const emoji = ['🌽', '🍇', '🍌', '🍒', '🍕', '🍷', '🍭', '💖', '💩', '🐷', '🐸', '🐳', '🎃', '🎾', '🌈', '🍦', '💁', '🔥', '😁', '😱', '🌴', '👏', '💃']
 
 export class ControlPanel extends PureComponent {
   state = { open: false }
@@ -22,7 +24,11 @@ export class ControlPanel extends PureComponent {
 
   renderPanel = () => (
     <div className="control-panel__panel">
-      <div class="row">
+      <div className="row">
+        <div className="col-sm-9">
+          <div>Spread some love</div>
+          {emoji.map((e) => <EmojiButton key={e} emoji={e} />)}
+        </div>
         <div className="col-sm-3">
           Image filter:
           <Select
