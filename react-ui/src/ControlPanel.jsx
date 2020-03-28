@@ -1,6 +1,12 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import Select from 'react-select'
+import { captureUserPicture, setPictureFilter } from './actions'
+
+const makeOption = (value) => ({ label: value || 'none', value })
+
+const options = [null].concat(window.pixelsJS.getFilterList()).map(makeOption)
 
 export class ControlPanel extends PureComponent {
   state = { open: false }
@@ -16,7 +22,17 @@ export class ControlPanel extends PureComponent {
 
   renderPanel = () => (
     <div className="control-panel__panel">
-      Content
+      <div class="row">
+        <div className="col-sm-3">
+          Image filter:
+          <Select
+            options={options}
+            value={makeOption(this.props.pictureFilter)}
+            menuPlacement="top"
+            onChange={this.setPictureFilter}
+          />
+        </div>
+      </div>
 
       <div className="control-panel__credits">
         Made with &hearts; by Karl
@@ -32,8 +48,14 @@ export class ControlPanel extends PureComponent {
   toggleOpen = () => {
     this.setState({ open: !this.state.open })
   }
+
+  setPictureFilter = ({ value }) => {
+    this.props.setPictureFilter(value)
+    this.props.captureUserPicture()
+  }
 }
 
 export default connect(
-  (state) => ({}),
+  ({ pictureFilter }) => ({ pictureFilter }),
+  { captureUserPicture, setPictureFilter }
 )(ControlPanel)
