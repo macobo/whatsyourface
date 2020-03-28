@@ -18,3 +18,7 @@ export const capturingImage = createReducer(false, {
 export const timerFrequency = createReducer(60, {
   [actions.setTimerFrequency]: (state, action) => action.payload
 })
+
+export const pictureFilter = createReducer(null, {
+  [actions.setPictureFilter]: (state, action) => action.payload
+})

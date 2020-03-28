@@ -2,6 +2,7 @@ import React, { PureComponent, createRef } from 'react'
 import { connect } from 'react-redux'
 import Webcam from 'react-webcam'
 import { updateUserPicture } from './actions'
+import applyFilter from './applyFilter'
 
 const dimensions = { width: 320, height: 240 }
 
@@ -28,8 +29,8 @@ export class PictureCapture extends PureComponent {
     </div>
   )
 
-  capturePhoto = () => {
-    const image = this.webcamRef.current.getScreenshot()
+  capturePhoto = async() => {
+    const image = await applyFilter(this.webcamRef.current.getScreenshot(), this.props.pictureFilter)
     if (image) {
       this.props.updateUserPicture(image)
       return true
@@ -37,4 +38,7 @@ export class PictureCapture extends PureComponent {
   }
 }
 
-export default connect(undefined, { updateUserPicture })(PictureCapture)
+export default connect(
+  ({ pictureFilter }) => ({ pictureFilter }),
+  { updateUserPicture }
+)(PictureCapture)
