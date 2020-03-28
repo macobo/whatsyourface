@@ -21,7 +21,7 @@ export const setupPictureTimer = () => async(dispatch, getState) => {
 
   const { timerFrequency } = getState()
   dispatch(captureUserPicture())
-  pictureTimer = setInterval(() => { dispatch(captureUserPicture()) }, timerFrequency)
+  pictureTimer = setInterval(() => { dispatch(captureUserPicture()) }, timerFrequency * 1000)
 }
 
 export const setUserName = (name) => () => {

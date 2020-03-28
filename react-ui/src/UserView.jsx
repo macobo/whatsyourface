@@ -42,7 +42,7 @@ export class UserView extends PureComponent {
           Refresh rate:
           &nbsp;
           <a href="#" className="user-overlay-content__link" onClick={this.setTimerFrequency}>
-            {this.props.timerFrequency} ms
+            {this.props.timerFrequency} s
           </a>
         </div>
       </div>
@@ -74,7 +74,7 @@ export class UserView extends PureComponent {
   setTimerFrequency = (event) => {
     event.preventDefault()
 
-    const value = +prompt('Enter timer frequency (milliseconds)', this.props.timerFrequency)
+    const value = +prompt('Enter timer frequency (seconds)', this.props.timerFrequency)
     if (value) {
       this.props.setTimerFrequency(value)
       this.props.setupPictureTimer()

@@ -15,6 +15,6 @@ export const capturingImage = createReducer(false, {
   [actions.updateUserPicture.pending]: () => false,
 })
 
-export const timerFrequency = createReducer(60000, {
+export const timerFrequency = createReducer(60, {
   [actions.setTimerFrequency]: (state, action) => action.payload
 })
