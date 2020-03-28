@@ -4,6 +4,7 @@ import PictureCapture from './PictureCapture'
 import UserView from './UserView'
 import { getActiveUsers } from './selectors'
 // import EmojiRain from './EmojiRain'
+import ControlPanel from './ControlPanel'
 
 import './App.css'
 
@@ -15,6 +16,7 @@ export class App extends PureComponent {
       <div className="picture-grid">
         {this.props.users.map((user) => <UserView key={user.id} user={user} />)}
       </div>
+      <ControlPanel />
     </>
   )
 }

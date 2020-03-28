@@ -101,3 +101,34 @@
     width: 50%;
   }
 }
+
+.control-panel {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+}
+
+.control-panel__toggle {
+  opacity: 0.3;
+  margin: 0;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  padding-bottom: 0px;
+}
+
+.control-panel__toggle:hover, .control-panel__toggle--active {
+  opacity: 1;
+}
+
+.control-panel__panel {
+  background-color: rgb(226, 226, 226);;
+  padding: 20px;
+  padding-bottom: 10px;
+}
+
+.control-panel__credits {
+  text-align: right;
+  font-size: 14px;
+}
