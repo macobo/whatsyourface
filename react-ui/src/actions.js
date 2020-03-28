@@ -1,7 +1,6 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit'
+import getUserMedia from 'get-user-media-promise'
 import { sendMessage } from './websocket'
-
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
 export const setTimerFrequency = createAction('setTimerFrequency')
 export const setPictureFilter = createAction('setPictureFilter')
@@ -20,7 +19,7 @@ export const setupPictureTimer = () => async(dispatch, getState) => {
     clearInterval(pictureTimer)
   }
 
-  await navigator.mediaDevices.getUserMedia({ video: true })
+  await getUserMedia({ video: true })
 
   const { timerFrequency } = getState()
   dispatch(captureUserPicture())
