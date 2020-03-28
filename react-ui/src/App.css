@@ -20,20 +20,24 @@
 }
 
 .user-image {
-  width: 320px;
+  position: relative;
+  width: 20%;
+  max-width: 480px;
 }
 
 .user-image__image {
+  width: 100%;
   vertical-align: top;
+  object-fit: cover;
 }
 
 .user-image__overlay {
   color: white;
   opacity: 0;
 
-  height: 240px;
-  width: 320px;
   position: absolute;
+  height: 100%;
+  width: 100%;
 
   background-color: rgba(54,63,67,.7);
   z-index: 2;
@@ -90,4 +94,10 @@
   color: white !important;
   text-decoration: underline;
   font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  .user-image {
+    width: 50%;
+  }
 }
