@@ -9,7 +9,12 @@ export class PictureCapture extends PureComponent {
   webcamRef = createRef()
 
   componentDidMount = () => {
-    setTimeout(() => this.capturePhoto(), 1000)
+    const interval = setInterval(() => {
+      if (this.webcamRef.current) {
+        clearInterval(interval)
+        this.capturePhoto()
+      }
+    }, 1000)
   }
 
   render = () => (
