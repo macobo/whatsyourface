@@ -2,7 +2,8 @@ let canvas
 
 export default async function applyFilter(imageData, filter) {
   return new Promise((resolve) => {
-    if (!filter) {
+    console.debug('start', { imageData })
+    if (!filter || !imageData) {
       return resolve(imageData)
     }
 
