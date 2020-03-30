@@ -108,6 +108,7 @@
   bottom: 0;
   left: 0;
   text-align: center;
+  z-index: 4;
 }
 
 .control-panel__toggle {
@@ -116,7 +117,6 @@
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   padding-bottom: 0px;
-  z-index: 4;
 }
 
 .control-panel__toggle:hover, .control-panel__toggle--active {
@@ -128,7 +128,6 @@
   background-color: rgb(226, 226, 226);;
   padding: 20px;
   padding-bottom: 10px;
-  z-index: 4;
 }
 
 .control-panel__credits {
