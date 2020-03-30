@@ -28,7 +28,7 @@ class PictureServer {
   }
 
   updatePicture = (id, event) => {
-    this.updateState(id, { image: event.image })
+    this.updateState(id, { image: event.image, active: true })
     this.connector.notifyAllUsers('updateState', pick(this.state, id))
   }
 
