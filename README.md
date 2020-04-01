@@ -1,5 +1,7 @@
 # whatsyourface
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 WhatsYourFace is tool to bring your team closer together when working remotely.
 
 ![snapshot](https://raw.githubusercontent.com/macobo/whatsyourface/master/snapshot.png)
