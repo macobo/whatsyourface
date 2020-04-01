@@ -1,6 +1,6 @@
 {
-  "name": "heroku-cra-node",
-  "description": "web app made of create-react-app UI + Node API",
+  "name": "whatsyourface",
+  "description": "Share your face with your team, stay motivated working remotely",
   "scripts": {
   },
   "env": {

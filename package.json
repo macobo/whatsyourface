@@ -1,7 +1,7 @@
 {
-  "name": "heroku-cra-node",
+  "name": "whatsyourface",
   "version": "3.0.0",
-  "description": "How to use create-react-app with a custom Node API on Heroku",
+  "description": "Share your face with your team, stay motivated working remotely",
   "engines": {
     "node": "12.x"
   },
@@ -21,13 +21,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mars/heroku-cra-node.git"
+    "url": "https://github.com/macobo/whatsyourface.git"
   },
   "keywords": [
     "node",
     "heroku",
-    "create-react-app",
-    "react"
+    "react",
+    "webcam",
+    "remote",
+    "fun"
   ],
   "license": "MIT",
   "devDependencies": {}
