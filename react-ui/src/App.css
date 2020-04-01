@@ -43,7 +43,9 @@
   z-index: 2;
 }
 
-.user-image:hover .user-image__overlay {
+.user-image:hover .user-image__overlay,
+.user-image__overlay--offline,
+.user-image__overlay--offline .user-overlay-offline-summary {
   opacity: 1;
 }
 

@@ -9,7 +9,7 @@ export class UserView extends PureComponent {
 
   render = () => (
     <div className="user-image">
-      <div className="user-image__overlay">
+      <div className={this.overlayClasses()}>
         <div className="user-overlay-content">
           {this.props.activeUser ? this.renderActiveUserOverlay() : this.renderOverlay()}
         </div>
@@ -58,6 +58,12 @@ export class UserView extends PureComponent {
       </div>
     </>
   )
+
+  overlayClasses = () =>
+    classNames({
+      'user-image__overlay': true,
+      'user-image__overlay--offline': !this.props.user.active,
+    })
 
   statusIndicatorClasses = () =>
     classNames({
