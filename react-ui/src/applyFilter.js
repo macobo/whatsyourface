@@ -1,5 +1,4 @@
 import transformImageWithStyle, {getImageStyle} from './styleTransfer'
-import imageStyles from './imageStyles'
 
 let canvas, base_style
 
@@ -23,12 +22,11 @@ export default async function applyFilter(imageData, filter, weight) {
       const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 
       // Choose whether to use pixelsJS or styleTransfer
-      var is_style = !!(imageStyles[filter])
+      var is_style = (typeof filter != 'string')
       var orig_data = imgData.data.slice(0)
       let transformedImg
       if (is_style) {
-
-        var style = imageStyles[filter]
+        var style = filter
 
         if (weight<1.0) { // Linear interpolation between base and given style
           base_style = base_style || await getImageStyle(imgData)

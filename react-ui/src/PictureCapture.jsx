@@ -35,7 +35,7 @@ export class PictureCapture extends PureComponent {
   capturePhoto = async() => {
     console.debug('taking a photo')
 
-    const image = await applyFilter(this.webcamRef.current.getScreenshot(), this.props.pictureFilter, this.props.pictureFilterWeight)
+    const image = await applyFilter(this.webcamRef.current.getScreenshot(), this.props.pictureFilter.value, this.props.pictureFilterWeight)
     console.debug('capturePhoto', { image })
     if (image) {
       this.props.updateUserPicture(image)

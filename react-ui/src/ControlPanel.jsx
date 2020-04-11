@@ -3,12 +3,9 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import Select from 'react-select'
 import { captureUserPicture, setPictureFilter, setPictureFilterWeight } from './actions'
+import { imageDataFromFile, getImageStyle } from './styleTransfer'
 import EmojiButton from './EmojiButton'
-import imageStyles from './imageStyles'
 
-const makeOption = (value) => ({ label: value || 'none', value })
-
-const options = [null].concat(window.pixelsJS.getFilterList()).concat(Object.keys(imageStyles)).map(makeOption)
 const emoji = ['🌽', '🍇', '🍌', '🍒', '🍕', '🍷', '🍭', '💖', '💩', '🐷', '🐸', '🐳', '🎃', '🎾', '🌈', '🍦', '💁', '🔥', '😁', '😱', '🌴', '👏', '💃']
 
 export class ControlPanel extends PureComponent {
@@ -33,8 +30,8 @@ export class ControlPanel extends PureComponent {
         <div className="col-sm-3">
           Image filter:
           <Select
-            options={options}
-            value={makeOption(this.props.pictureFilter)}
+            options={this.props.pictureFilterList}
+            value={this.props.pictureFilter}
             menuPlacement="top"
             onChange={this.setPictureFilter}
           />
@@ -43,6 +40,8 @@ export class ControlPanel extends PureComponent {
             value={this.props.pictureFilterWeight}
             onChange={this.setPictureFilterWeight}
           />
+          <input type="file" id="new-filter-fileinput" onChange={this.newPictureFilterFromImage} style={{display:'none'}} accept=".png,.jpg,.jpeg"/>
+          <label htmlFor="new-filter-fileinput" className="button tertiary">+</label>
         </div>
       </div>
 
@@ -61,7 +60,8 @@ export class ControlPanel extends PureComponent {
     this.setState({ open: !this.state.open })
   }
 
-  setPictureFilter = ({ value }) => {
+  setPictureFilter = (value) => {
+    console.log("SET PICTURE FILTER",value)
     this.props.setPictureFilter(value)
     this.props.captureUserPicture()
   }
@@ -70,9 +70,19 @@ export class ControlPanel extends PureComponent {
     this.props.setPictureFilterWeight(target.value)
     this.props.captureUserPicture()
   }
+
+  newPictureFilterFromImage = ({ target }) => {
+    const file = target.files[0]
+    imageDataFromFile(file)
+      .then(getImageStyle)
+      .then((value) => ({'label':file.name, value}))
+      .then(this.setPictureFilter)
+    target.value = '';
+  }
+
 }
 
 export default connect(
-  ({ pictureFilter, pictureFilterWeight }) => ({ pictureFilter, pictureFilterWeight }),
+  ({ pictureFilter, pictureFilterWeight, pictureFilterList }) => ({ pictureFilter, pictureFilterWeight, pictureFilterList }),
   { captureUserPicture, setPictureFilter, setPictureFilterWeight }
 )(ControlPanel)
