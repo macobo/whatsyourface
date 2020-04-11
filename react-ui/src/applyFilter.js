@@ -30,9 +30,7 @@ export default async function applyFilter(imageData, filter, weight) {
 
         if (weight<1.0) { // Linear interpolation between base and given style
           base_style = base_style || await getImageStyle(imgData)
-          console.log("STYLE",weight,base_style,style)
           style = linearCombination(base_style,style,weight)
-          console.log("New STYLE",style)
         }
 
         transformedImg = await transformImageWithStyle(imgData, style)

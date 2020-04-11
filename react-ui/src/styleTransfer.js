@@ -8,11 +8,11 @@ const transferModelPath = 'tf_models/transfer/model.json'
 
 export default async function transformImageWithStyle(imageData, style) {
 
-	transferModel = transferModel || await tf.loadGraphModel(transferModelPath);
-	
-	const stylized = await tf.tidy(() => {
-		const styleInput = styleFromArray(style)
-		const imgInput = tf.browser.fromPixels(imageData).toFloat().div(tf.scalar(255.0)).expandDims()
+  transferModel = transferModel || await tf.loadGraphModel(transferModelPath);
+
+  const stylized = await tf.tidy(() => {
+    const styleInput = styleFromArray(style)
+    const imgInput = tf.browser.fromPixels(imageData).toFloat().div(tf.scalar(255.0)).expandDims()
     return transferModel.predict([imgInput, styleInput]).squeeze()
   })
   return new ImageData(await tf.browser.toPixels(stylized),imageData.width,imageData.height) // returns Uint8ClampedArray
@@ -20,24 +20,34 @@ export default async function transformImageWithStyle(imageData, style) {
 
 export async function getImageStyle(imageData) {
 
-	styleModel = styleModel || await tf.loadGraphModel(styleModelPath)
+  styleModel = styleModel || await tf.loadGraphModel(styleModelPath)
 
-	return await tf.tidy(() => {
-		const imgInput = tf.browser.fromPixels(imageData).toFloat().div(tf.scalar(255.0)).expandDims()
+  return await tf.tidy(() => {
+    const imgInput = tf.browser.fromPixels(imageData).toFloat().div(tf.scalar(255.0)).expandDims()
     return styleToArray(styleModel.predict(imgInput).expandDims())
   })
 }
 
-export async function imageDataFromFile(file) {
-	return new Promise((resolve) => {
-    var canvas = document.createElement("canvas")
-    var ctx = canvas.getContext("2d")
+// Load image data from file (and shrink, if needed)
+export async function imageDataFromFile(file, max_width) {
+  return new Promise((resolve) => {
 
     const img = new Image()
     img.onload = () => {
       URL.revokeObjectURL(img.src)
-      ctx.drawImage(img, 0, 0)
-      resolve(ctx.getImageData(0, 0, canvas.width, canvas.height))
+
+      var w = img.width, h = img.height;
+      if (max_width && w>max_width) {
+        h = Math.round(h*max_width/w)
+        w = max_width
+      }
+
+      var canvas = document.createElement("canvas")
+      canvas.width = w; canvas.height = h
+      var ctx = canvas.getContext("2d")
+
+      ctx.drawImage(img, 0, 0, w, h)
+      resolve(ctx.getImageData(0, 0, w, h))
     }
     img.src = URL.createObjectURL(file)
   })

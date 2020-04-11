@@ -61,7 +61,6 @@ export class ControlPanel extends PureComponent {
   }
 
   setPictureFilter = (value) => {
-    console.log("SET PICTURE FILTER",value)
     this.props.setPictureFilter(value)
     this.props.captureUserPicture()
   }
@@ -73,7 +72,7 @@ export class ControlPanel extends PureComponent {
 
   newPictureFilterFromImage = ({ target }) => {
     const file = target.files[0]
-    imageDataFromFile(file)
+    imageDataFromFile(file,512)
       .then(getImageStyle)
       .then((value) => ({'label':file.name, value}))
       .then(this.setPictureFilter)
