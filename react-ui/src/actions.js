@@ -3,6 +3,7 @@ import { sendMessage } from './websocket'
 
 export const setTimerFrequency = createAction('setTimerFrequency')
 export const setPictureFilter = createAction('setPictureFilter')
+export const setPictureFilterWeight = createAction('setPictureFilterWeight')
 export const captureUserPicture = createAction('captureUserPicture')
 
 export const updateUserPicture = createAsyncThunk(

@@ -2,16 +2,17 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import Select from 'react-select'
-import { captureUserPicture, setPictureFilter } from './actions'
+import { captureUserPicture, setPictureFilter, setPictureFilterWeight } from './actions'
 import EmojiButton from './EmojiButton'
+import imageStyles from './imageStyles'
 
 const makeOption = (value) => ({ label: value || 'none', value })
 
-const options = [null].concat(window.pixelsJS.getFilterList()).map(makeOption)
+const options = [null].concat(window.pixelsJS.getFilterList()).concat(Object.keys(imageStyles)).map(makeOption)
 const emoji = ['🌽', '🍇', '🍌', '🍒', '🍕', '🍷', '🍭', '💖', '💩', '🐷', '🐸', '🐳', '🎃', '🎾', '🌈', '🍦', '💁', '🔥', '😁', '😱', '🌴', '👏', '💃']
 
 export class ControlPanel extends PureComponent {
-  state = { open: false }
+  state = { open: true }
 
   render = () => (
     <div className="control-panel">
@@ -37,6 +38,11 @@ export class ControlPanel extends PureComponent {
             menuPlacement="top"
             onChange={this.setPictureFilter}
           />
+          <input type="range"
+            min="0" max="1" step="0.01"
+            value={this.props.pictureFilterWeight}
+            onChange={this.setPictureFilterWeight}
+          />
         </div>
       </div>
 
@@ -59,9 +65,14 @@ export class ControlPanel extends PureComponent {
     this.props.setPictureFilter(value)
     this.props.captureUserPicture()
   }
+
+  setPictureFilterWeight = ({ target }) => {
+    this.props.setPictureFilterWeight(target.value)
+    this.props.captureUserPicture()
+  }
 }
 
 export default connect(
-  ({ pictureFilter }) => ({ pictureFilter }),
-  { captureUserPicture, setPictureFilter }
+  ({ pictureFilter, pictureFilterWeight }) => ({ pictureFilter, pictureFilterWeight }),
+  { captureUserPicture, setPictureFilter, setPictureFilterWeight }
 )(ControlPanel)

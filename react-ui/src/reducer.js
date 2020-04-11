@@ -23,6 +23,10 @@ export const pictureFilter = createReducer(null, {
   [actions.setPictureFilter]: (state, action) => action.payload
 })
 
+export const pictureFilterWeight = createReducer(1.0, {
+  [actions.setPictureFilterWeight]: (state, action) => action.payload
+})
+
 export const emojiRain = createReducer({}, {
   addEmoji: (state, action) => ({
     ...state,

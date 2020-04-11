@@ -28,14 +28,6 @@ export async function getImageStyle(imageData) {
   })
 }
 
-// Combine styles by linear weighing so w=0 is s0 and w=1 is s1
-export async function combineStyles(s0,s1,w) {
-	return await tf.tidy(() => {
-		const s0t = styleFromArray(s0), s1t = styleFromArray(s1)
-    return styleToArray(s0t.mul(tf.scalar(1.0-w)).addStrict(s1t.mul(tf.scalar(w))))
-  })
-}
-
 // Two helper functions to allow styles to be js arrays instead of tf tensors
 function styleFromArray(style_array) { return tf.tensor(style_array,[1,1,1,100]) }
 function styleToArray(style) { return style.dataSync() }
