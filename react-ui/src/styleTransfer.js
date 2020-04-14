@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs'
+import { fetchImageDataObject } from './styles/images'
 tf.ENV.set('WEBGL_PACK', false)
 
 let styleModel, transferModel
@@ -19,7 +20,6 @@ export default async function transformImageWithStyle(imageData, style) {
 }
 
 export async function getImageStyle(imageData) {
-
   styleModel = styleModel || await tf.loadGraphModel(styleModelPath)
 
   return await tf.tidy(() => {
@@ -31,28 +31,13 @@ export async function getImageStyle(imageData) {
 }
 
 // Load image data from file (and shrink, if needed)
-export async function imageDataFromFile(file, max_width) {
-  return new Promise((resolve) => {
+export async function imageDataFromFile(file, maxWidth) {
+  const url = URL.createObjectURL(file)
+  const imageData = await fetchImageDataObject(url)
 
-    const img = new Image()
-    img.onload = () => {
-      URL.revokeObjectURL(img.src)
+  URL.revokeObjectURL(url)
 
-      var w = img.width, h = img.height;
-      if (max_width && w>max_width) {
-        h = Math.round(h*max_width/w)
-        w = max_width
-      }
-
-      var canvas = document.createElement("canvas")
-      canvas.width = w; canvas.height = h
-      var ctx = canvas.getContext("2d")
-
-      ctx.drawImage(img, 0, 0, w, h)
-      resolve(ctx.getImageData(0, 0, w, h))
-    }
-    img.src = URL.createObjectURL(file)
-  })
+  return imageData
 }
 
 // Two helper functions to allow styles to be js arrays instead of tf tensors
