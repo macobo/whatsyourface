@@ -22,7 +22,8 @@ export const timerFrequency = createReducer(60, {
 })
 
 export const pictureFilter = createReducer(noneOption, {
-  [actions.setPictureFilter]: (state, action) => action.payload
+  [actions.setPictureFilter]: (state, action) => action.payload,
+  [actions.setUploadedPictureFilter]: (state, action) => action.payload
 })
 
 export const pictureFilterWeight = createReducer(1.0, {
@@ -30,7 +31,7 @@ export const pictureFilterWeight = createReducer(1.0, {
 })
 
 export const customFilters = createReducer([], {
-  [actions.setPictureFilter]: (state, action) => uniqBy([action.payload].concat(state), 'label')
+  [actions.setUploadedPictureFilter]: (state, action) => uniqBy([action.payload].concat(state), 'label')
 })
 
 export const emojiRain = createReducer({}, {

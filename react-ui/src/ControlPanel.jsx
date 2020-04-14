@@ -8,8 +8,12 @@ import {
   getPictureFilter,
   getPictureFilterWeight,
 } from './selectors'
-import { captureUserPicture, setPictureFilter, setPictureFilterWeight } from './actions'
-import { imageDataFromFile, getImageStyle } from './styleTransfer'
+import {
+  captureUserPicture,
+  setPictureFilter,
+  setPictureFilterWeight,
+  uploadPictureFilter,
+} from './actions'
 import EmojiButton from './EmojiButton'
 
 const emoji = ['🌽', '🍇', '🍌', '🍒', '🍕', '🍷', '🍭', '💖', '💩', '🐷', '🐸', '🐳', '🎃', '🎾', '🌈', '🍦', '💁', '🔥', '😁', '😱', '🌴', '👏', '💃']
@@ -46,7 +50,7 @@ export class ControlPanel extends PureComponent {
             value={this.props.pictureFilterWeight}
             onChange={this.setPictureFilterWeight}
           />
-          <input type="file" id="new-filter-fileinput" onChange={this.newPictureFilterFromImage} style={{display:'none'}} accept=".png,.jpg,.jpeg"/>
+          <input type="file" id="new-filter-fileinput" onChange={this.handleNewFilterImage} style={{display:'none'}} accept=".png,.jpg,.jpeg"/>
           <label htmlFor="new-filter-fileinput" className="button tertiary">+</label>
         </div>
       </div>
@@ -71,19 +75,14 @@ export class ControlPanel extends PureComponent {
     this.props.captureUserPicture()
   }
 
-  setPictureFilterWeight = ({ target }) => {
-    this.props.setPictureFilterWeight(target.value)
+  setPictureFilterWeight = (event) => {
+    this.props.setPictureFilterWeight(event.target.value)
     this.props.captureUserPicture()
   }
 
-  newPictureFilterFromImage = ({ target }) => {
-    const file = target.files[0]
-    imageDataFromFile(file,512)
-      .then(getImageStyle)
-      .then((value) => ({'label':file.name, value}))
-      .then(this.setPictureFilter)
+  handleNewFilterImage = (event) => {
+    this.props.uploadPictureFilter(event.target.files[0])
   }
-
 }
 
 export default connect(
@@ -92,5 +91,5 @@ export default connect(
     pictureFilterWeight: getPictureFilterWeight,
     options: getFilterOptions,
   }),
-  { captureUserPicture, setPictureFilter, setPictureFilterWeight }
+  { captureUserPicture, setPictureFilter, setPictureFilterWeight, uploadPictureFilter }
 )(ControlPanel)
