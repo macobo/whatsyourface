@@ -1,7 +1,6 @@
-import transformImageWithStyle from './styleTransfer'
+import transformImageWithStyle from './styles/styleTransfer'
 import { fetchImageDataObject, imageDataToUrl } from './styles/images'
 import linearCombination from './styles/linearCombination'
-
 
 export default async function applyFilter(imageDataUrl, filter, weight) {
   if (!imageDataUrl || filter.type === 'none') {

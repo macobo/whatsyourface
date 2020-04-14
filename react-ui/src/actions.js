@@ -1,6 +1,6 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit'
 import { sendMessage } from './websocket'
-import { imageDataFromFile, getImageStyle } from './styleTransfer'
+import { imageDataFromFile, getImageStyle } from './styles/styleTransfer'
 
 export const setTimerFrequency = createAction('setTimerFrequency')
 export const setPictureFilter = createAction('setPictureFilter')

@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs'
-import { fetchImageDataObject } from './styles/images'
-import linearCombination from './styles/linearCombination'
+import { fetchImageDataObject } from './images'
+import linearCombination from './linearCombination'
 tf.ENV.set('WEBGL_PACK', false)
 
 let styleModel, transferModel
