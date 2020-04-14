@@ -19,7 +19,7 @@ import EmojiButton from './EmojiButton'
 const emoji = ['🌽', '🍇', '🍌', '🍒', '🍕', '🍷', '🍭', '💖', '💩', '🐷', '🐸', '🐳', '🎃', '🎾', '🌈', '🍦', '💁', '🔥', '😁', '😱', '🌴', '👏', '💃']
 
 export class ControlPanel extends PureComponent {
-  state = { open: true }
+  state = { open: false }
 
   render = () => (
     <div className="control-panel">
