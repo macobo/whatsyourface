@@ -76,7 +76,6 @@ export class ControlPanel extends PureComponent {
       .then(getImageStyle)
       .then((value) => ({'label':file.name, value}))
       .then(this.setPictureFilter)
-    target.value = '';
   }
 
 }
