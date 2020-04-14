@@ -5,7 +5,7 @@ export const fetchImageDataObject = (url, maxWidth = null) => {
     image.onload = () => {
       const { canvas, context } = getCanvasContext()
 
-      const { width, height } = image
+      let { width, height } = image
       if (maxWidth && width > maxWidth) {
         height = Math.round(height * maxWidth / width)
         width = maxWidth
