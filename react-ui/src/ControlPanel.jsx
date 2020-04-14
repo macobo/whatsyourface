@@ -43,7 +43,7 @@ export class ControlPanel extends PureComponent {
             <Select
               className="react-select"
               options={this.props.options}
-              value={this.props.pictureFilter}
+              defaultValue={this.props.pictureFilter}
               menuPlacement="top"
               onChange={this.setPictureFilter}
             />

@@ -43,6 +43,64 @@ export const defaultStyleTransfer = [
   },
 ]
 
-export const pixelsJSFilters = window.pixelsJS
-  .getFilterList()
-  .map((value) => ({ label: value, value, type: 'pixelJS' }))
+const makeOptions = (label, values) => ({
+  label,
+  options: values.map((value) => ({ label: value, value, type: 'pixelJS' }))
+})
+
+export const pixelsJSFilters = [
+  makeOptions('Instagram-y filters', [
+    'haze',
+    'incbrightness',
+    'ocean',
+    'perfume',
+    'pink_aura',
+    'serenity',
+    'vintage',
+    'wood',
+  ]),
+  makeOptions('Intense', [
+    'aeon',
+    'blues',
+    'cool_twilight',
+    'eon',
+    'frontward',
+    'grime',
+    'invert',
+    'lemon',
+    'lix',
+    'neue',
+    'ryo',
+    'solange',
+    'solange_dark',
+    'sunset',
+    'zapt',
+  ]),
+  makeOptions('Monochrome', [
+    'bluescale',
+    'greengreyscale',
+    'greyscale',
+    'purplescale',
+    'redgreyscale',
+    'rosetint',
+    'solange_grey',
+  ]),
+
+  makeOptions('Monochrome', [
+    'offset',
+    'offset_green',
+    'offset_blue',
+    'extra_offset_red',
+    'extra_offset_green',
+    'extra_offset_blue',
+    'extreme_offset_red',
+    'extreme_offset_green',
+    'extreme_offset_blue',
+  ]),
+  makeOptions('Patterns', [
+    'pane',
+    'diagonal_lines',
+    'horizontal_lines',
+    'green_diagonal_lines',
+  ]),
+]

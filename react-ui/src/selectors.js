@@ -28,6 +28,6 @@ export const getFilterOptions = createSelector(
     initialFilters.noneOption,
     { label: 'Custom filters', options: filters },
     { label: 'Style transfer', options: initialFilters.defaultStyleTransfer },
-    { label: 'PixelJS styles', options: initialFilters.pixelsJSFilters }
+    ...initialFilters.pixelsJSFilters,
   ]
 )
