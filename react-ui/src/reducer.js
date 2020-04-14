@@ -1,6 +1,7 @@
+import { uniqBy } from 'lodash'
 import { createReducer } from '@reduxjs/toolkit'
 import * as actions from './actions'
-import initialFilterList from './initialFilterList'
+import { noneOption } from './initialFilterList'
 
 export const uuid = createReducer('', {
   uuid: (state, action) => action.payload
@@ -20,7 +21,7 @@ export const timerFrequency = createReducer(60, {
   [actions.setTimerFrequency]: (state, action) => action.payload
 })
 
-export const pictureFilter = createReducer(initialFilterList[0], {
+export const pictureFilter = createReducer(noneOption, {
   [actions.setPictureFilter]: (state, action) => action.payload
 })
 
@@ -28,13 +29,8 @@ export const pictureFilterWeight = createReducer(1.0, {
   [actions.setPictureFilterWeight]: (state, action) => action.payload
 })
 
-export const pictureFilterList = createReducer(initialFilterList, {
-	// Put the chosen filter as first after 'none'. If filter not yet present, add it
-	[actions.setPictureFilter]: (state, action) => { 
-						state = state.filter(item => item.label !== action.payload.label)
-						state.splice(1,0,action.payload) // right after 'none'
-						return state
-	}
+export const customFilters = createReducer([], {
+  [actions.setPictureFilter]: (state, action) => uniqBy([action.payload].concat(state), 'label')
 })
 
 export const emojiRain = createReducer({}, {

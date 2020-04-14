@@ -2,6 +2,12 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import Select from 'react-select'
+import { createStructuredSelector } from 'reselect'
+import {
+  getFilterOptions,
+  getPictureFilter,
+  getPictureFilterWeight,
+} from './selectors'
 import { captureUserPicture, setPictureFilter, setPictureFilterWeight } from './actions'
 import { imageDataFromFile, getImageStyle } from './styleTransfer'
 import EmojiButton from './EmojiButton'
@@ -30,7 +36,7 @@ export class ControlPanel extends PureComponent {
         <div className="col-sm-3">
           Image filter:
           <Select
-            options={this.props.pictureFilterList}
+            options={this.props.options}
             value={this.props.pictureFilter}
             menuPlacement="top"
             onChange={this.setPictureFilter}
@@ -81,6 +87,10 @@ export class ControlPanel extends PureComponent {
 }
 
 export default connect(
-  ({ pictureFilter, pictureFilterWeight, pictureFilterList }) => ({ pictureFilter, pictureFilterWeight, pictureFilterList }),
+  createStructuredSelector({
+    pictureFilter: getPictureFilter,
+    pictureFilterWeight: getPictureFilterWeight,
+    options: getFilterOptions,
+  }),
   { captureUserPicture, setPictureFilter, setPictureFilterWeight }
 )(ControlPanel)
