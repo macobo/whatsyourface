@@ -39,19 +39,23 @@ export class ControlPanel extends PureComponent {
         </div>
         <div className="col-sm-3">
           Image filter:
-          <Select
-            options={this.props.options}
-            value={this.props.pictureFilter}
-            menuPlacement="top"
-            onChange={this.setPictureFilter}
-          />
-          <input type="range"
-            min="0" max="1" step="0.01"
-            value={this.props.pictureFilterWeight}
-            onChange={this.setPictureFilterWeight}
-          />
-          <input type="file" id="new-filter-fileinput" onChange={this.handleNewFilterImage} style={{display:'none'}} accept=".png,.jpg,.jpeg"/>
-          <label htmlFor="new-filter-fileinput" className="button tertiary">+</label>
+          <div className="control-panel__filter-select">
+            <Select
+              className="react-select"
+              options={this.props.options}
+              value={this.props.pictureFilter}
+              menuPlacement="top"
+              onChange={this.setPictureFilter}
+            />
+            <input
+              type="file"
+              id="new-filter-fileinput"
+              onChange={this.handleNewFilterImage}
+              style={{display:'none'}}
+              accept=".png,.jpg,.jpeg"
+            />
+            <label htmlFor="new-filter-fileinput" className="button tertiary">+</label>
+          </div>
         </div>
       </div>
 

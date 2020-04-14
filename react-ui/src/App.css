@@ -137,3 +137,12 @@
   font-size: 14px;
 }
 
+.control-panel__filter-select {
+  display: flex;
+  align-items: center;
+}
+
+.react-select {
+  display: inline-block;
+  width: 100%;
+}
