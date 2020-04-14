@@ -35,7 +35,7 @@ export async function getImageStyle(imageData) {
 // Load image data from file (and shrink, if needed)
 export async function imageDataFromFile(file, maxWidth) {
   const url = URL.createObjectURL(file)
-  const imageData = await fetchImageDataObject(url)
+  const imageData = await fetchImageDataObject(url, maxWidth)
 
   URL.revokeObjectURL(url)
 
