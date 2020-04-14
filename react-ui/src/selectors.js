@@ -24,6 +24,10 @@ export const getActiveUsers = createSelector(
 
 export const getFilterOptions = createSelector(
   [getCustomFilters],
-  (filters) =>
-    [initialFilters.noneOption].concat(filters).concat(initialFilters.defaultStyleTransfer).concat(initialFilters.pixelsJSFilters)
+  (filters) => [
+    initialFilters.noneOption,
+    { label: 'Custom filters', options: filters },
+    { label: 'Style transfer', options: initialFilters.defaultStyleTransfer },
+    { label: 'PixelJS styles', options: initialFilters.pixelsJSFilters }
+  ]
 )
