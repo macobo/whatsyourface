@@ -4,42 +4,44 @@ import { fetchImageDataObject, imageDataToUrl } from './styles/images'
 let base_style
 
 export default async function applyFilter(imageDataUrl, filter, weight) {
-  if (!filter || !imageDataUrl) {
+  if (!imageDataUrl || filter.type === 'none') {
     return imageDataUrl
   }
 
   const imageData = await fetchImageDataObject(imageDataUrl)
+  let transformedImage = await transform(imageData, filter, weight)
 
-  // Choose whether to use pixelsJS or styleTransfer
-  var is_style = (typeof filter != 'string')
-  var orig_data = imageData.data.slice(0)
-  let transformedImg
-  if (is_style) {
-    var style = filter
-
-    if (weight<1.0) { // Linear interpolation between base and given style
-      base_style = base_style || await getImageStyle(imageData)
-      style = linearCombination(base_style,style,weight)
-    }
-
-    transformedImg = await transformImageWithStyle(imageData, style)
-  }
-  else
-    transformedImg = window.pixelsJS.filterImgData(imageData, filter)
-
-    console.log({transformedImg})
-  if (weight<1.0) { // Linear interpolation between pixels of filter and original
-    const tdata = transformedImg.data
-    transformedImg = new ImageData(
-      linearCombination(orig_data,tdata,weight),
+  // Linear interpolation between pixels of filter and unfiltered image
+  if (weight < 1.0) {
+    transformedImage = new ImageData(
+      linearCombination(imageData.data, transformedImage.data, weight),
       imageData.width,
       imageData.height
     )
   }
 
-  return imageDataToUrl(transformedImg)
+  return imageDataToUrl(transformedImage)
+}
+
+const transform = async(imageData, filter, weight) => {
+  if (filter.type === 'pixelJS') {
+    return window.pixelsJS.filterImgData(imageData, filter.value)
+  } else if (filter.type === 'styleTransfer') {
+    const style = await calculateStyle(imageData, filter, weight)
+    return await transformImageWithStyle(imageData, style)
+  } else {
+    return imageData
+  }
+}
+
+const calculateStyle = async(imageData, filter, weight) => {
+  base_style = base_style || await getImageStyle(imageData)
+  return linearCombination(base_style, filter.value, weight)
 }
 
 function linearCombination(a0, a1, weight) {
+  if (weight >= 1.0) {
+    return a1
+  }
   return a1.map((x,i) => weight*x + (1.0-weight)*a0[i])
 }
