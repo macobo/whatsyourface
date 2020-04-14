@@ -1,6 +1,7 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit'
 import { sendMessage } from './websocket'
 import { imageDataFromFile, getImageStyle } from './styles/styleTransfer'
+import applyFilter from './applyFilter'
 
 export const setTimerFrequency = createAction('setTimerFrequency')
 export const setPictureFilter = createAction('setPictureFilter')
@@ -46,4 +47,19 @@ export const uploadPictureFilter = (file) => async(dispatch) => {
 
   dispatch(setUploadedPictureFilter(pictureFilter))
   dispatch(captureUserPicture())
+}
+
+export const processWebcamImage = (webcamImage) => async(dispatch, getState) => {
+  const { pictureFilter, pictureFilterWeight } = getState()
+
+  const image = await applyFilter(
+    webcamImage,
+    pictureFilter,
+    pictureFilterWeight
+  )
+
+  console.debug('capturePhoto', { image })
+  if (image) {
+    dispatch(updateUserPicture(image))
+  }
 }

@@ -1,8 +1,7 @@
 import React, { PureComponent, createRef } from 'react'
 import { connect } from 'react-redux'
 import Webcam from 'react-webcam'
-import { updateUserPicture } from './actions'
-import applyFilter from './applyFilter'
+import { processWebcamImage } from './actions'
 
 const dimensions = { width: 320, height: 240 }
 
@@ -13,7 +12,7 @@ export class PictureCapture extends PureComponent {
     window.webcamRef = this.webcamRef
     const interval = setInterval(async() => {
       console.debug('interval', this.webcamRef)
-      if (this.webcamRef.current && await this.capturePhoto()) {
+      if (this.webcamRef.current && this.capturePhoto()) {
         console.debug('cleared interval', interval)
         clearInterval(interval)
       }
@@ -32,25 +31,14 @@ export class PictureCapture extends PureComponent {
     </div>
   )
 
-  capturePhoto = async() => {
-    console.debug('taking a photo')
-    const screenshot = this.webcamRef.current.getScreenshot()
-
-    const image = await applyFilter(
-      screenshot,
-      this.props.pictureFilter,
-      this.props.pictureFilterWeight
-    )
-
-    console.debug('capturePhoto', { image })
-    if (image) {
-      this.props.updateUserPicture(image)
-      return true
-    }
+  capturePhoto = () => {
+    const image = this.webcamRef.current.getScreenshot()
+    this.props.processWebcamImage(image)
+    return true
   }
 }
 
 export default connect(
-  ({ pictureFilter, pictureFilterWeight }) => ({ pictureFilter, pictureFilterWeight }),
-  { updateUserPicture }
+  undefined,
+  { processWebcamImage }
 )(PictureCapture)
