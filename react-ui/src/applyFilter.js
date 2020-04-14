@@ -1,57 +1,33 @@
-import transformImageWithStyle, {getImageStyle} from './styleTransfer'
+import transformImageWithStyle from './styles/styleTransfer'
+import { fetchImageDataObject, imageDataToUrl } from './styles/images'
+import linearCombination from './styles/linearCombination'
 
-let canvas, base_style
+export default async function applyFilter(imageDataUrl, filter, weight) {
+  if (!imageDataUrl || filter.type === 'none') {
+    return imageDataUrl
+  }
 
-export default async function applyFilter(imageData, filter, weight) {
-  return new Promise(async (resolve) => {
-    console.debug('start', { imageData })
-    if (!filter || !imageData) {
-      return resolve(imageData)
-    }
+  const imageData = await fetchImageDataObject(imageDataUrl)
+  let transformedImage = await transform(imageData, filter, weight)
 
-    canvas = canvas || document.createElement('canvas')
+  // Linear interpolation between pixels of filter and unfiltered image
+  if (weight < 1.0) {
+    transformedImage = new ImageData(
+      linearCombination(imageData.data, transformedImage.data, weight),
+      imageData.width,
+      imageData.height
+    )
+  }
 
-    const image = new Image()
-    image.onload = async () => {
-      const ctx = canvas.getContext('2d')
-
-      canvas.width = image.width
-      canvas.height = image.height
-      ctx.drawImage(image, 0, 0, image.width, image.height)
-
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-
-      // Choose whether to use pixelsJS or styleTransfer
-      var is_style = (typeof filter != 'string')
-      var orig_data = imgData.data.slice(0)
-      let transformedImg
-      if (is_style) {
-        var style = filter
-
-        if (weight<1.0) { // Linear interpolation between base and given style
-          base_style = base_style || await getImageStyle(imgData)
-          style = linearCombination(base_style,style,weight)
-        }
-
-        transformedImg = await transformImageWithStyle(imgData, style)
-      }
-      else
-        transformedImg = window.pixelsJS.filterImgData(imgData, filter)
-
-      if (weight<1.0) { // Linear interpolation between pixels of filter and original
-        const tdata = transformedImg.data
-        transformedImg = new ImageData(
-          linearCombination(orig_data,tdata,weight),
-          imgData.width,imgData.height)
-      }
-
-      ctx.putImageData(transformedImg, 0, 0)
-      resolve(canvas.toDataURL())
-    }
-    image.src = imageData
-  })
+  return imageDataToUrl(transformedImage)
 }
 
-function linearCombination(a0, a1, weight) {
-  return a1.map((x,i) => weight*x + (1.0-weight)*a0[i])
+const transform = async(imageData, filter, weight) => {
+  if (filter.type === 'pixelJS') {
+    return window.pixelsJS.filterImgData(imageData, filter.value)
+  } else if (filter.type === 'styleTransfer') {
+    return await transformImageWithStyle(imageData, filter.value, weight)
+  } else {
+    return imageData
+  }
 }

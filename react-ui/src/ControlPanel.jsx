@@ -2,14 +2,24 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import Select from 'react-select'
-import { captureUserPicture, setPictureFilter, setPictureFilterWeight } from './actions'
-import { imageDataFromFile, getImageStyle } from './styleTransfer'
+import { createStructuredSelector } from 'reselect'
+import {
+  getFilterOptions,
+  getPictureFilter,
+  getPictureFilterWeight,
+} from './selectors'
+import {
+  captureUserPicture,
+  setPictureFilter,
+  setPictureFilterWeight,
+  uploadPictureFilter,
+} from './actions'
 import EmojiButton from './EmojiButton'
 
 const emoji = ['🌽', '🍇', '🍌', '🍒', '🍕', '🍷', '🍭', '💖', '💩', '🐷', '🐸', '🐳', '🎃', '🎾', '🌈', '🍦', '💁', '🔥', '😁', '😱', '🌴', '👏', '💃']
 
 export class ControlPanel extends PureComponent {
-  state = { open: true }
+  state = { open: false }
 
   render = () => (
     <div className="control-panel">
@@ -29,19 +39,23 @@ export class ControlPanel extends PureComponent {
         </div>
         <div className="col-sm-3">
           Image filter:
-          <Select
-            options={this.props.pictureFilterList}
-            value={this.props.pictureFilter}
-            menuPlacement="top"
-            onChange={this.setPictureFilter}
-          />
-          <input type="range"
-            min="0" max="1" step="0.01"
-            value={this.props.pictureFilterWeight}
-            onChange={this.setPictureFilterWeight}
-          />
-          <input type="file" id="new-filter-fileinput" onChange={this.newPictureFilterFromImage} style={{display:'none'}} accept=".png,.jpg,.jpeg"/>
-          <label htmlFor="new-filter-fileinput" className="button tertiary">+</label>
+          <div className="control-panel__filter-select">
+            <Select
+              className="react-select"
+              options={this.props.options}
+              defaultValue={this.props.pictureFilter}
+              menuPlacement="top"
+              onChange={this.setPictureFilter}
+            />
+            <input
+              type="file"
+              id="new-filter-fileinput"
+              onChange={this.handleNewFilterImage}
+              style={{display:'none'}}
+              accept=".png,.jpg,.jpeg"
+            />
+            <label htmlFor="new-filter-fileinput" className="button tertiary">+</label>
+          </div>
         </div>
       </div>
 
@@ -65,23 +79,21 @@ export class ControlPanel extends PureComponent {
     this.props.captureUserPicture()
   }
 
-  setPictureFilterWeight = ({ target }) => {
-    this.props.setPictureFilterWeight(target.value)
+  setPictureFilterWeight = (event) => {
+    this.props.setPictureFilterWeight(event.target.value)
     this.props.captureUserPicture()
   }
 
-  newPictureFilterFromImage = ({ target }) => {
-    const file = target.files[0]
-    imageDataFromFile(file,512)
-      .then(getImageStyle)
-      .then((value) => ({'label':file.name, value}))
-      .then(this.setPictureFilter)
-    target.value = '';
+  handleNewFilterImage = (event) => {
+    this.props.uploadPictureFilter(event.target.files[0])
   }
-
 }
 
 export default connect(
-  ({ pictureFilter, pictureFilterWeight, pictureFilterList }) => ({ pictureFilter, pictureFilterWeight, pictureFilterList }),
-  { captureUserPicture, setPictureFilter, setPictureFilterWeight }
+  createStructuredSelector({
+    pictureFilter: getPictureFilter,
+    pictureFilterWeight: getPictureFilterWeight,
+    options: getFilterOptions,
+  }),
+  { captureUserPicture, setPictureFilter, setPictureFilterWeight, uploadPictureFilter }
 )(ControlPanel)
