@@ -1,5 +1,6 @@
 import * as tf from '@tensorflow/tfjs'
 import { fetchImageDataObject } from './styles/images'
+import linearCombination from './styles/linearCombination'
 tf.ENV.set('WEBGL_PACK', false)
 
 let styleModel, transferModel
@@ -7,12 +8,13 @@ let styleModel, transferModel
 const styleModelPath = 'tf_models/style/model.json'
 const transferModelPath = 'tf_models/transfer/model.json'
 
-export default async function transformImageWithStyle(imageData, style) {
+export default async function transformImageWithStyle(imageData, style, weight) {
+  transferModel = transferModel || await tf.loadGraphModel(transferModelPath)
 
-  transferModel = transferModel || await tf.loadGraphModel(transferModelPath);
+  const interpolatedStyle = await calculateStyle(imageData, style, weight)
 
   const stylized = await tf.tidy(() => {
-    const styleInput = styleFromArray(style)
+    const styleInput = styleFromArray(interpolatedStyle)
     const imgInput = tf.browser.fromPixels(imageData).toFloat().expandDims()
     return transferModel.predict([imgInput, styleInput]).squeeze().div(tf.scalar(255.0))
   })
@@ -38,6 +40,12 @@ export async function imageDataFromFile(file, maxWidth) {
   URL.revokeObjectURL(url)
 
   return imageData
+}
+
+let base_style
+const calculateStyle = async(imageData, style, weight) => {
+  base_style = base_style || await getImageStyle(imageData)
+  return linearCombination(base_style, style, weight)
 }
 
 // Two helper functions to allow styles to be js arrays instead of tf tensors
