@@ -9,14 +9,21 @@ export class PictureCapture extends PureComponent {
   webcamRef = createRef()
 
   componentDidMount = () => {
-    window.webcamRef = this.webcamRef
-    const interval = setInterval(async() => {
+    this.interval = setInterval(async() => {
       console.debug('interval', this.webcamRef)
-      if (this.webcamRef.current && this.capturePhoto()) {
-        console.debug('cleared interval', interval)
-        clearInterval(interval)
+      if (this.webcamRef.current) {
+        try {
+          this.capturePhoto()
+          clearInterval(this.interval)
+        } catch(error) {
+          console.error('Taking image failed', error)
+        }
       }
     }, 1000)
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.interval)
   }
 
   render = () => (
@@ -34,7 +41,6 @@ export class PictureCapture extends PureComponent {
   capturePhoto = () => {
     const image = this.webcamRef.current.getScreenshot()
     this.props.processWebcamImage(image)
-    return true
   }
 }
 
