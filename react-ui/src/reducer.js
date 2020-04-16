@@ -14,6 +14,7 @@ export const users = createReducer({}, {
 
 export const capturingImage = createReducer(false, {
   [actions.captureUserPicture]: () => true,
+  [actions.closeWebcam]: () => false,
   [actions.updateUserPicture.pending]: () => false,
 })
 

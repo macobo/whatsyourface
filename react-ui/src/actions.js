@@ -7,6 +7,7 @@ export const setTimerFrequency = createAction('setTimerFrequency')
 export const setPictureFilter = createAction('setPictureFilter')
 export const setPictureFilterWeight = createAction('setPictureFilterWeight')
 export const captureUserPicture = createAction('captureUserPicture')
+export const closeWebcam = createAction('closeWebcam')
 export const setUploadedPictureFilter = createAction('uploadPictureFilter')
 
 export const updateUserPicture = createAsyncThunk(
@@ -50,6 +51,7 @@ export const uploadPictureFilter = (file) => async(dispatch) => {
 }
 
 export const processWebcamImage = (webcamImage) => async(dispatch, getState) => {
+  dispatch(closeWebcam())
   const { pictureFilter, pictureFilterWeight } = getState()
 
   const image = await applyFilter(
