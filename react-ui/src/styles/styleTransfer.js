@@ -13,12 +13,16 @@ export default async function transformImageWithStyle(imageData, style, weight) 
 
   const interpolatedStyle = await calculateStyle(imageData, style, weight)
 
-  const stylized = await tf.tidy(() => {
+  const stylizedTensor = await tf.tidy(() => {
     const styleInput = styleFromArray(interpolatedStyle)
     const imgInput = tf.browser.fromPixels(imageData).toFloat().expandDims()
     return transferModel.predict([imgInput, styleInput]).squeeze().div(tf.scalar(255.0))
   })
-  return new ImageData(await tf.browser.toPixels(stylized),imageData.width,imageData.height) // returns Uint8ClampedArray
+
+  const stylizedData = await tf.browser.toPixels(stylizedTensor)
+  stylizedTensor.dispose() // tf objects do not get cleaned by automatic gc
+
+  return new ImageData(stylizedData,imageData.width,imageData.height) // returns Uint8ClampedArray
 }
 
 export async function getImageStyle(imageData) {
@@ -42,7 +46,7 @@ export async function imageDataFromFile(file, maxWidth) {
   return imageData
 }
 
-let base_style
+let base_style // memoized as style of webcam images is likely quite similar within one session
 const calculateStyle = async(imageData, style, weight) => {
   base_style = base_style || await getImageStyle(imageData)
   return linearCombination(base_style, style, weight)
