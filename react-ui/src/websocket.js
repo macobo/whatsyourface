@@ -36,6 +36,10 @@ export function connectWebsocket(store) {
     store.dispatch(setUserName(user.name))
   }
 
+  ws.onopen = (event) => {
+    console.log('Websocket connected', event)
+  }
+
   ws.onmessage = (event) => {
     console.debug('Received message', event)
     store.dispatch(JSON.parse(event.data))
