@@ -86,7 +86,7 @@ export const pixelsJSFilters = [
     'solange_grey',
   ]),
 
-  makeOptions('Monochrome', [
+  makeOptions('Offset', [
     'offset',
     'offset_green',
     'offset_blue',
