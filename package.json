@@ -14,7 +14,7 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "lodash": "^4.17.21",
     "uuid": "^7.0.2",
     "ws": "^7.2.3"
